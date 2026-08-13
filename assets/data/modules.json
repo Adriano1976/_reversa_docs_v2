@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-12T14:00:00Z",
+  "project": "analisador-genealogico",
+  "language": "Python/Flask",
+  "modules": [
+    {
+      "id": "app",
+      "name": "app.py",
+      "path": "analisador-genealogico/app.py",
+      "type": "entrypoint",
+      "language": "python",
+      "folder": "analisador-genealogico",
+      "loc": 86,
+      "complexity": 5,
+      "description": "Camada web Flask: rotas / (GET/POST) orquestrando upload, análise de DNA e busca de caminho."
+    },
+    {
+      "id": "domain",
+      "name": "domain.py",
+      "path": "analisador-genealogico/reconstructed/domain.py",
+      "type": "domain",
+      "language": "python",
+      "folder": "reconstructed",
+      "loc": 124,
+      "complexity": 3,
+      "description": "Entidades de domínio (Family, GenealogyGraph, DNAGroup) e rotinas demojibake/strip_bad_utf."
+    },
+    {
+      "id": "upload",
+      "name": "upload.py",
+      "path": "analisador-genealogico/reconstructed/upload.py",
+      "type": "parser",
+      "language": "python",
+      "folder": "reconstructed",
+      "loc": 91,
+      "complexity": 5,
+      "description": "Parsing GEDCOM via ged4py e construção do grafo bidirecional pessoa<->família (networkx)."
+    },
+    {
+      "id": "path-search",
+      "name": "path_search.py",
+      "path": "analisador-genealogico/reconstructed/path_search.py",
+      "type": "algorithm",
+      "language": "python",
+      "folder": "reconstructed",
+      "loc": 501,
+      "complexity": 8,
+      "description": "Busca de caminho direto (MRCA, BFS bidirecional, max 20) e indireto por afinidade (max 40 hops), render Mermaid."
+    },
+    {
+      "id": "dna-analysis",
+      "name": "dna_analysis.py",
+      "path": "analisador-genealogico/reconstructed/dna_analysis.py",
+      "type": "algorithm",
+      "language": "python",
+      "folder": "reconstructed",
+      "loc": 409,
+      "complexity": 8,
+      "description": "Cruzamento GEDCOM x CSV: agregação de segmentos (cM), fuzzy matching com filtro anti-falso-positivo e previsão de parentesco."
+    },
+    {
+      "id": "pkg-init",
+      "name": "__init__.py",
+      "path": "analisador-genealogico/reconstructed/__init__.py",
+      "type": "config",
+      "language": "python",
+      "folder": "reconstructed",
+      "loc": 1,
+      "complexity": 1,
+      "description": "Marcador do pacote reconstructed."
+    },
+    {
+      "id": "test-domain",
+      "name": "test_domain.py",
+      "path": "tests/test_domain.py",
+      "type": "test",
+      "language": "python",
+      "folder": "tests",
+      "loc": 123,
+      "complexity": 2,
+      "description": "Testes de entidades de domínio e correção de mojibake."
+    },
+    {
+      "id": "test-upload",
+      "name": "test_upload.py",
+      "path": "tests/test_upload.py",
+      "type": "test",
+      "language": "python",
+      "folder": "tests",
+      "loc": 185,
+      "complexity": 3,
+      "description": "Testes de ref_id, get_name, build_graph_from_parser com GEDCOM sintético."
+    },
+    {
+      "id": "test-path-search",
+      "name": "test_path_search.py",
+      "path": "tests/test_path_search.py",
+      "type": "test",
+      "language": "python",
+      "folder": "tests",
+      "loc": 107,
+      "complexity": 2,
+      "description": "Testes de busca de caminho direto e por afinidade."
+    },
+    {
+      "id": "test-dna-analysis",
+      "name": "test_dna_analysis.py",
+      "path": "tests/test_dna_analysis.py",
+      "type": "test",
+      "language": "python",
+      "folder": "tests",
+      "loc": 168,
+      "complexity": 3,
+      "description": "Testes da análise de DNA: agregação, encoding, matching difuso e mensagens de erro."
+    },
+    {
+      "id": "fixtures-dna",
+      "name": "sample_dna.py",
+      "path": "tests/fixtures/sample_dna.py",
+      "type": "fixture",
+      "language": "python",
+      "folder": "tests/fixtures",
+      "loc": 48,
+      "complexity": 1,
+      "description": "GEDCOM e CSVs sintéticos para os testes de análise de DNA."
+    },
+    {
+      "id": "fixtures-gedcom",
+      "name": "sample_gedcom.py",
+      "path": "tests/fixtures/sample_gedcom.py",
+      "type": "fixture",
+      "language": "python",
+      "folder": "tests/fixtures",
+      "loc": 57,
+      "complexity": 1,
+      "description": "GEDCOM sintético para os testes de upload e busca de caminho."
+    },
+    {
+      "id": "templates-index",
+      "name": "index.html",
+      "path": "analisador-genealogico/templates/index.html",
+      "type": "frontend",
+      "language": "html",
+      "folder": "analisador-genealogico/templates",
+      "loc": 200,
+      "complexity": 5,
+      "description": "View Jinja2 + Bootstrap 5 com formulários e renderização de resultados."
+    },
+    {
+      "id": "static-graph",
+      "name": "graph_path_search.html",
+      "path": "analisador-genealogico/static/graph_path_search.html",
+      "type": "frontend",
+      "language": "html",
+      "folder": "analisador-genealogico/static",
+      "loc": 321,
+      "complexity": 5,
+      "description": "Visualização interativa do grafo de busca de caminho (Pyvis)."
+    }
+  ]
+}
