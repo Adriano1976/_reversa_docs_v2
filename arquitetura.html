@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-base-path="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="reversa-category" content="diagram">
+<meta name="reversa-producer-agent" content="reversa-docs-mapper">
+<meta name="reversa-template" content="arquitetura">
+<meta name="reversa-generated-at" content="2026-08-12T14:05:00Z">
+<!-- TITLE -->
+<title>Arquitetura 3D — analisador-genealogico</title>
+<!-- PAGE_ID -->
+<meta name="reversa-page-id" content="arquitetura">
+<!-- VISUAL_STYLE -->
+<meta name="reversa-visual-style" content="sober">
+<!-- HEAD_EXTRAS -->
+<script src="assets/vendor/three.min.js"></script>
+<script src="assets/vendor/OrbitControls.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/nav.js"></script>
+<style>
+  :root{
+    --bg:#1e2024; --panel:#26282e; --line:#3a3d45; --txt:#d7dae0;
+    --muted:#8b909a; --accent:#4f8cff;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--txt); font-family:"Segoe UI", system-ui, sans-serif; height:100vh; overflow:hidden;}
+  header.site{position:fixed; top:0; left:0; right:0; height:52px; background:rgba(30,32,36,.92); border-bottom:1px solid var(--line); display:flex; align-items:center; padding:0 20px; z-index:20; gap:14px;}
+  header.site .brand{font-weight:600; letter-spacing:.3px; white-space:nowrap;}
+  header.site .sub{color:var(--muted); font-size:12px; white-space:nowrap;}
+  nav.reversa-doc-nav{display:flex; gap:4px; flex:1; justify-content:flex-end; align-items:center; min-width:0;}
+  nav.reversa-doc-nav a{color:var(--muted); text-decoration:none; font-size:13px; padding:6px 10px; border-radius:6px; white-space:nowrap;}
+  nav.reversa-doc-nav a:hover{color:var(--txt); background:var(--panel);}
+  nav.reversa-doc-nav a[aria-current="page"]{color:#fff; background:rgba(79,140,255,.16); outline:1px solid rgba(79,140,255,.35);}
+  .seal-mini{width:26px; height:26px; flex:0 0 auto;}
+  #scene{position:fixed; inset:52px 0 0 0;}
+  #loader{position:fixed; inset:52px 0 0 0; display:flex; align-items:center; justify-content:center; font-size:16px; background:var(--bg); color:var(--muted); z-index:5;}
+  #sidebar{position:fixed; right:0; top:52px; bottom:0; width:250px; background:rgba(38,38,46,.94); border-left:1px solid var(--line); padding:16px; z-index:10; overflow-y:auto;}
+  #sidebar h3{font-size:13px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:12px;}
+  #sidebar .ctl{margin-bottom:14px;}
+  #sidebar label{display:block; font-size:12px; color:var(--muted); margin-bottom:4px;}
+  #sidebar input[type=range]{width:100%; accent-color:var(--accent);}
+  #sidebar button{width:100%; background:var(--accent); color:#fff; border:none; border-radius:6px; padding:8px; font-size:13px; cursor:pointer; margin-bottom:8px;}
+  #sidebar .stats{margin-top:16px; border-top:1px solid var(--line); padding-top:12px; font-size:12px; color:var(--muted); line-height:1.8;}
+  #sidebar .stats b{color:var(--txt);}
+  #tooltip{position:fixed; display:none; background:rgba(20,21,24,.96); border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:12px; max-width:300px; z-index:30; pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.5);}
+  #tooltip b{color:#fff;}
+  #tooltip .muted{color:var(--muted);}
+  .legend{position:fixed; bottom:14px; left:20px; z-index:15; display:flex; gap:16px; background:rgba(30,32,36,.75); padding:8px 14px; border-radius:8px; font-size:12px; color:var(--muted);}
+  .legend .item{display:flex; align-items:center; gap:6px;}
+  .legend .sw{width:12px; height:12px; border-radius:3px;}
+</style>
+</head>
+<body>
+<header class="site">
+  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#23262c"/>
+  <g stroke="#3a3d45" stroke-width="1" fill="none">
+    <circle cx="32" cy="32" r="27"/>
+    <circle cx="32" cy="32" r="20"/>
+    <circle cx="32" cy="32" r="13"/>
+  </g>
+  <g stroke="#4f8cff" stroke-opacity="0.3" stroke-width="1">
+    <line x1="32" y1="4" x2="32" y2="60"/>
+    <line x1="4" y1="32" x2="60" y2="32"/>
+    <line x1="12" y1="12" x2="52" y2="52"/>
+    <line x1="12" y1="52" x2="52" y2="12"/>
+  </g>
+  <polygon points="32,16 46,32 32,48 18,32" fill="#4f8cff"/>
+  <polygon points="32,24 40,32 32,40 24,32" fill="#d18a5a" opacity="0.9"/>
+  <g fill="#6b7d99">
+    <circle cx="32" cy="5.5" r="1.6"/>
+    <circle cx="58.5" cy="32" r="1.6"/>
+    <circle cx="32" cy="58.5" r="1.6"/>
+    <circle cx="5.5" cy="32" r="1.6"/>
+  </g>
+</svg>
+  <span class="brand">analisador-genealogico</span>
+  <span class="sub">Arquitetura 3D</span>
+  <!-- NAV_LINKS -->
+  <nav class="reversa-doc-nav"></nav>
+</header>
+
+<div id="loader">Carregando cena 3D...</div>
+<div id="scene"></div>
+
+<aside id="sidebar">
+  <h3>Controles</h3>
+  <div class="ctl">
+    <label for="scaleY">Escala vertical (altura) <span id="scaleYVal">1.00</span></label>
+    <input type="range" id="scaleY" min="0.25" max="2.5" step="0.05" value="1">
+  </div>
+  <div class="ctl">
+    <label for="lightI">Intensidade da luz <span id="lightIVal">1.00</span></label>
+    <input type="range" id="lightI" min="0.2" max="2.5" step="0.05" value="1">
+  </div>
+  <button id="reset">Reset</button>
+  <button id="export-png">Exportar PNG</button>
+  <div class="stats" id="stats"></div>
+</aside>
+
+<div id="tooltip"></div>
+<div class="legend">
+  <div class="item"><span class="sw" style="background:#4f8cff"></span> app.py</div>
+  <div class="item"><span class="sw" style="background:#6fbf73"></span> reconstructed/</div>
+  <div class="item"><span class="sw" style="background:#e0a458"></span> tests/</div>
+  <div class="item"><span class="sw" style="background:#b587e6"></span> templates / static</div>
+</div>
+
+<!-- PAYLOAD -->
+<script>
+(function(){
+  "use strict";
+  var DATA = (window.RV_DATA && window.RV_DATA.modules) || {};
+  var modules = (DATA.modules) || [];
+  var loader = document.getElementById("loader");
+  if(!modules.length || typeof THREE === "undefined"){
+    loader.style.display = "flex";
+    loader.textContent = typeof THREE === "undefined"
+      ? "Esta visualização requer carregar a biblioteca Three.js. Conecte-se à internet e recarregue."
+      : "Nenhum dado de módulos disponível.";
+    return;
+  }
+
+  // Paleta por pasta
+  var folderColor = {
+    "analisador-genealogico": 0x4f8cff,
+    "reconstructed": 0x6fbf73,
+    "tests": 0xe0a458,
+    "tests/fixtures": 0xe0a458,
+    "analisador-genealogico/templates": 0xb587e6,
+    "analisador-genealogico/static": 0xb587e6
+  };
+
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x1e2024);
+  var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 2000);
+  var renderer = new THREE.WebGLRenderer({ antialias:true, preserveDrawingBuffer:true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth - 250, window.innerHeight - 52);
+  renderer.shadowMap.enabled = true;
+  document.getElementById("scene").appendChild(renderer.domElement);
+  renderer.domElement.style.width = "100%";
+  renderer.domElement.style.height = "100%";
+
+  var controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.maxPolarAngle = Math.PI / 2.1;
+
+  var hemi = new THREE.HemisphereLight(0xffffff, 0x1e2024, 0.85);
+  scene.add(hemi);
+  var dir = new THREE.DirectionalLight(0xffffff, 1.0);
+  dir.position.set(120, 200, 80);
+  dir.castShadow = true;
+  scene.add(dir);
+
+  // Grid ground
+  var grid = new THREE.GridHelper(400, 30, 0x3a3d45, 0x2b2e35);
+  scene.add(grid);
+
+  // Layout em grade: colunas por pasta, blocos empilhados por LOC
+  var maxLoc = 0;
+  modules.forEach(function(m){ if(Number(m.loc) > maxLoc) maxLoc = Number(m.loc); });
+  var folderGroups = {};
+  modules.forEach(function(m){
+    (folderGroups[m.folder] = folderGroups[m.folder] || []).push(m);
+  });
+  var folders = Object.keys(folderGroups).sort();
+  var cellX = 22, cellZ = 22;
+  var baseY = 0.5;
+  var labels = [];
+  var boxes = [];
+
+  folders.forEach(function(f, ci){
+    var mods = folderGroups[f];
+    mods.sort(function(a,b){ return Number(b.loc) - Number(a.loc); });
+    mods.forEach(function(m, mi){
+      var x = (ci - (folders.length-1)/2) * cellX * 3;
+      var z = (mi - (mods.length-1)/2) * cellZ;
+      var w = Math.max(4, 8 + Number(m.loc)/maxLoc * 14);
+      var d = w * 0.8;
+      var h = Math.max(1.2, Number(m.loc)/maxLoc * 34);
+      var geo = new THREE.BoxGeometry(w, h, d);
+      var col = folderColor[m.folder] || 0x8b909a;
+      var mat = new THREE.MeshStandardMaterial({ color: col, roughness:0.55, metalness:0.12 });
+      var mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(x, baseY + h/2, z);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.userData = m;
+      scene.add(mesh);
+      boxes.push(mesh);
+
+      // Label sprite-like: canvas
+      var cv = document.createElement("canvas");
+      cv.width = 512; cv.height = 64;
+      var ctx = cv.getContext("2d");
+      ctx.fillStyle = "rgba(30,32,36,0.85)";
+      ctx.fillRect(0,0,512,64);
+      ctx.fillStyle = "#d7dae0";
+      ctx.font = "28px Segoe UI, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(m.name, 256, 40);
+      var tex = new THREE.CanvasTexture(cv);
+      var sprMat = new THREE.SpriteMaterial({ map: tex, transparent:true });
+      var spr = new THREE.Sprite(sprMat);
+      spr.scale.set(26, 3.2, 1);
+      spr.position.set(x, baseY + h + 2.4, z);
+      scene.add(spr);
+      labels.push(spr);
+    });
+    // Folder marker
+    var cm = document.createElement("canvas");
+    cm.width = 512; cm.height = 64;
+    var cmctx = cm.getContext("2d");
+    cmctx.fillStyle = "rgba(38,38,46,0.9)";
+    cmctx.fillRect(0,0,512,64);
+    cmctx.fillStyle = "#8b909a";
+    cmctx.font = "bold 30px Segoe UI, sans-serif";
+    cmctx.textAlign = "center";
+    cmctx.fillText(f, 256, 40);
+    var ctex = new THREE.CanvasTexture(cm);
+    var csm = new THREE.SpriteMaterial({ map: ctex, transparent:true });
+    var cspr = new THREE.Sprite(csm);
+    var cx = (ci - (folders.length-1)/2) * cellX * 3;
+    cspr.scale.set(40, 5, 1);
+    cspr.position.set(cx, baseY + 1, 0);
+    cspr.position.set(cx, 2.2, (mods.length/2+1)*cellZ + 4);
+    scene.add(cspr);
+  });
+
+  // Camera fit
+  var ext = (folders.length) * cellX * 2;
+  camera.position.set(0, 90, ext + 60);
+  camera.lookAt(0, 20, 0);
+
+  var raycaster = new THREE.Raycaster();
+  var mouse = new THREE.Vector2();
+  var tooltip = document.getElementById("tooltip");
+  renderer.domElement.addEventListener("mousemove", function(ev){
+    var rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    var hits = raycaster.intersectObjects(boxes);
+    if(hits.length){
+      var d = hits[0].object.userData;
+      tooltip.style.display = "block";
+      tooltip.innerHTML = '<b>'+d.name+'</b><br><span class="muted">'+d.type+'</span> · '+d.language+
+        '<br>'+(Number(d.loc)||0)+' linhas · complexidade '+(Number(d.complexity)||0)+
+        '<br><span class="muted">'+d.path+'</span>';
+      tooltip.style.left = (ev.clientX+16)+"px";
+      tooltip.style.top = (ev.clientY+16)+"px";
+    } else {
+      tooltip.style.display = "none";
+    }
+  });
+
+  function applyScale(){
+    var s = parseFloat(document.getElementById("scaleY").value);
+    boxes.forEach(function(b){
+      var m = b.userData;
+      var h = Math.max(1.2, Number(m.loc)/maxLoc * 34) * s;
+      b.scale.y = s;
+      b.position.y = baseY + h/2;
+      labels.forEach(function(l){ if(l.position.x === b.position.x && Math.abs(l.position.z - b.position.z) < 0.5){ l.position.y = baseY + h + 2.4; }});
+    });
+  }
+  document.getElementById("scaleY").addEventListener("input", function(){
+    document.getElementById("scaleYVal").textContent = parseFloat(document.getElementById("scaleY").value).toFixed(2);
+    applyScale();
+  });
+  document.getElementById("lightI").addEventListener("input", function(){
+    var v = parseFloat(document.getElementById("lightI").value);
+    document.getElementById("lightIVal").textContent = v.toFixed(2);
+    hemi.intensity = 0.85 * v;
+    dir.intensity = 1.0 * v;
+  });
+  document.getElementById("reset").addEventListener("click", function(){
+    controls.reset();
+    camera.position.set(0, 90, ext + 60);
+    camera.lookAt(0, 20, 0);
+  });
+  document.getElementById("export-png").addEventListener("click", function(){
+    renderer.render(scene, camera);
+    renderer.domElement.toBlob(function(blob){
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "arquitetura-3d.png";
+      a.click();
+    });
+  });
+
+  var stats = document.getElementById("stats");
+  var totalLoc = modules.reduce(function(a,m){ return a + Number(m.loc); }, 0);
+  var byFolder = {};
+  modules.forEach(function(m){ byFolder[m.folder] = (byFolder[m.folder]||0) + 1; });
+  stats.innerHTML = '<b>'+modules.length+'</b> módulos<br><b>'+totalLoc+'</b> linhas de código<br><b>'+folders.length+'</b> pastas';
+
+  window.addEventListener("resize", function(){
+    camera.aspect = (window.innerWidth - 250) / (window.innerHeight - 52);
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth - 250, window.innerHeight - 52);
+  });
+
+  function animate(){
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  loader.style.display = "none";
+  animate();
+})();
+</script>
+</body>
+</html>
