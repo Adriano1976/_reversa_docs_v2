@@ -1,56 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
-  <defs>
-    <radialGradient id="bg" cx="50%" cy="45%" r="70%">
-      <stop offset="0%" stop-color="#23262c"/>
-      <stop offset="100%" stop-color="#181a1e"/>
-    </radialGradient>
-    <linearGradient id="gem" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#4f8cff"/>
-      <stop offset="100%" stop-color="#2f5cb0"/>
-    </linearGradient>
-    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="14" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>
-  <rect width="800" height="800" fill="url(#bg)"/>
-  <g stroke="#3a3d45" stroke-width="2" fill="none">
-    <circle cx="400" cy="400" r="330"/>
-    <circle cx="400" cy="400" r="262"/>
-    <circle cx="400" cy="400" r="190"/>
-    <circle cx="400" cy="400" r="120"/>
-  </g>
-  <g stroke="#4f8cff" stroke-opacity="0.25" stroke-width="1.5">
-    <line x1="400" y1="70" x2="400" y2="730"/>
-    <line x1="70" y1="400" x2="730" y2="400"/>
-    <line x1="166" y1="166" x2="634" y2="634"/>
-    <line x1="166" y1="634" x2="634" y2="166"/>
-    <line x1="215" y1="110" x2="585" y2="690"/>
-    <line x1="110" y1="215" x2="690" y2="585"/>
-    <line x1="585" y1="110" x2="215" y2="690"/>
-    <line x1="110" y1="585" x2="690" y2="215"/>
-  </g>
-  <g fill="#4f8cff" filter="url(#glow)">
-    <polygon points="400,238 520,400 400,562 280,400"/>
-    <polygon points="400,320 446,400 400,480 354,400" fill="#d18a5a" opacity="0.9"/>
-  </g>
-  <g fill="#d18a5a">
-    <circle cx="400" cy="238" r="12"/>
-    <circle cx="520" cy="400" r="12"/>
-    <circle cx="400" cy="562" r="12"/>
-    <circle cx="280" cy="400" r="12"/>
-  </g>
-  <g fill="#6b7d99">
-    <circle cx="400" cy="110" r="6"/>
-    <circle cx="690" cy="400" r="6"/>
-    <circle cx="400" cy="690" r="6"/>
-    <circle cx="110" cy="400" r="6"/>
-    <circle cx="400" cy="70" r="4"/>
-    <circle cx="730" cy="400" r="4"/>
-    <circle cx="400" cy="730" r="4"/>
-    <circle cx="70" cy="400" r="4"/>
-  </g>
-  <g fill="#8b909a" font-family="Consolas, monospace" font-size="22" text-anchor="middle">
-    <text x="400" y="360" fill="#d18a5a">G</text>
-  </g>
+<title>Selo generativo de analisador-genealogico: crystal-lattice</title>
+<rect width="800" height="800" rx="28" fill="#1e2937"/>
+<g stroke="#4f6b5d" stroke-width="1" stroke-opacity="0.22">
+    <line x1="400.00" y1="400.00" x2="333.13" y2="54.41"/>
+    <line x1="400.00" y1="400.00" x2="708.01" y2="229.61"/>
+    <line x1="400.00" y1="400.00" x2="657.23" y2="640.28"/>
+    <line x1="400.00" y1="400.00" x2="250.97" y2="718.89"/>
+    <line x1="400.00" y1="400.00" x2="50.66" y2="356.81"/>
+</g>
+<g stroke="#1e2937" stroke-width="3.00" stroke-linejoin="round">
+    <polygon points="333.13,54.41 708.01,229.61 657.23,640.28 250.97,718.89 50.66,356.81" fill="#f5f3ee"/>
+    <polygon points="340.94,103.10 664.12,252.08 622.30,605.48 273.27,674.92 99.38,364.42" fill="#bdb4a4"/>
+    <polygon points="383.37,147.11 635.38,306.04 562.10,594.82 264.80,614.37 154.35,337.66" fill="#7c8a99"/>
+    <polygon points="393.49,195.94 592.06,330.75 525.21,561.26 285.33,568.91 203.92,343.14" fill="#a06b4a"/>
+    <polygon points="399.33,245.12 547.09,351.50 491.58,524.90 309.51,525.69 252.49,352.78" fill="#4f6b5d"/>
+</g>
+  <polygon points="388.63,341.25 452.36,371.03 443.73,440.85 374.66,454.21 340.61,392.66" fill="#f5f3ee" stroke="#1e2937" stroke-width="3.00" stroke-linejoin="round"/>
 </svg>
